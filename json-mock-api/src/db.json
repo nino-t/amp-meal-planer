@@ -1,0 +1,36 @@
+{
+  "access_tokens": [
+    {
+      "user_id": 1,
+      "token": "8cCjBW2YGdF2appoNBtVbqMpCWjG6IQiBcjBuqQJ1av",
+      "exp": 1639384090
+    }
+  ],
+  "refresh_tokens": [
+    {
+      "user_id": 1,
+      "token": "UUBffZvnd8Acs9BelcSibI1RGEFA342TRHJVK2zoyZ3",
+      "exp": 1639423690
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "first_name": "Trisno",
+      "last_name": "Nino",
+      "email": "ninotrisno@example.com",
+      "password": "helloworld123",
+      "phone": "+62 800 1111 1111",
+      "address": "Jakarta, Indonesia"
+    },
+    {
+      "id": 2,
+      "first_name": "Panji",
+      "last_name": "Tamzil",
+      "email": "panji.tamzil@example.com",
+      "password": "helloworld321",
+      "phone": "+62 800 1111 1111",
+      "address": "Makasar, Indonesia"
+    }
+  ]
+}
