@@ -3,6 +3,10 @@ export interface LoginPayload {
   password: string;
 }
 
+export interface RevokeTokenPayload {
+  refresh_token: string;
+}
+
 export interface Auth {
   firstname: string;
   lastname: string;

@@ -1,14 +1,5 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
-import {
-  persistStore,
-  persistReducer,
-  FLUSH,
-  REHYDRATE,
-  PAUSE,
-  PERSIST,
-  PURGE,
-  REGISTER,
-} from "redux-persist";
+import { persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from "redux-persist";
 import counterReducer from "../features/counter/counterSlice";
 import authReducer from "./auth/auth.reducer";
 import storage from "redux-persist/lib/storage";

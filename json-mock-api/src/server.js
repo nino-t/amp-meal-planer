@@ -6,6 +6,7 @@ const middlewares = jsonServer.defaults();
 const { generateToken } = require("./utils/token");
 const low = require("lowdb");
 const FileSync = require("lowdb/adapters/FileSync");
+const _get = require("lodash/get");
 
 const adapter = new FileSync(path.join(__dirname, "db.json"));
 const db = low(adapter);
@@ -22,12 +23,20 @@ server.use((req, res, next) => {
 
   if (whitelisted.includes(req.path) === false) {
     const headers = req.headers || {};
-    const { token = null } = headers;
+    const { authorization = null } = headers;
 
-    if (token) {
-      const currentTime = Date().now();
+    if (authorization) {
+      const token = _get(authorization.split("Bearer "), "1", "");
+      const currentTime = Date.now();
       const dbToken = db.get("access_tokens").find({ token: token }).value();
-      if (dbToken.exp < currentTime) {
+
+      if (!dbToken) {
+        return res.status(401).jsonp({
+          error_message: "You not have access credentials",
+        });
+      }
+
+      if (dbToken.exp * 1000 < currentTime) {
         return res.status(401).jsonp({
           error_message: "Your token is expire",
         });
@@ -47,16 +56,16 @@ server.post("/api/v1/_/auth/token-revoke", (req, res) => {
   const oldRefreshToken = db
     .get("refresh_tokens")
     .find({
-      refresh_token,
+      token: refresh_token,
     })
     .value();
 
   if (oldRefreshToken) {
-    const generatedToken = generateToken(oldRefreshToken.id);
-    const newGeneratedRefreshToken = generateToken(oldRefreshToken.id, 12); // expire 12 hours
-    db.get("access_tokens").find({ user_id: oldRefreshToken.id }).assign(generatedToken).write();
+    const generatedToken = generateToken(oldRefreshToken.user_id);
+    const newGeneratedRefreshToken = generateToken(oldRefreshToken.user_id, 12); // expire 12 hours
+    db.get("access_tokens").find({ user_id: oldRefreshToken.user_id }).assign(generatedToken).write();
     db.get("refresh_tokens")
-      .find({ user_id: oldRefreshToken.id })
+      .find({ user_id: oldRefreshToken.user_id })
       .assign(newGeneratedRefreshToken)
       .write();
 
